@@ -39,8 +39,7 @@ public class CategoryController {
         } catch(Exception error) {
             System.out.println("Internal server error, please try again later. " + error.getMessage());
 
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-            .body(Collections.emptyList());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Collections.emptyList());
         }
     }
 
@@ -49,7 +48,7 @@ public class CategoryController {
         Category categoryFound = categoryRepository.findById(id)
         .orElseThrow(() -> new ResourceNotFoundException("Category " + id + " not found!"));
 
-        return ResponseEntity.status(HttpStatus.FOUND).body(categoryFound);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(categoryFound);
     }
 
     @PostMapping
@@ -79,7 +78,7 @@ public class CategoryController {
 
         categoryRepository.save(newCategory);
 
-        return ResponseEntity.ok(categoryFound);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(categoryFound);
     }
 
     @DeleteMapping("/{id}")

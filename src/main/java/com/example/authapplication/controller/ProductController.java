@@ -42,8 +42,7 @@ public class ProductController {
         } catch(Exception error) {
             System.out.println("Error to find products: " + error.getMessage());
 
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-            .body(Collections.emptyList());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Collections.emptyList());
         }
     }
 
@@ -66,7 +65,7 @@ public class ProductController {
 
             productRepository.save(newProduct);
 
-            return ResponseEntity.ok("Product registered successfully!");
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body("Product registered successfully!");
         } catch(Exception error) {
             System.out.println("Error to register a new product: " + error.getMessage());
 
