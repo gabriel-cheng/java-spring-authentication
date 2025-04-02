@@ -21,6 +21,7 @@ import com.example.authapplication.domain.category.CategoryRepository;
 import com.example.authapplication.domain.product.Product;
 import com.example.authapplication.domain.product.ProductRepository;
 import com.example.authapplication.domain.product.RequestProduct;
+import com.example.authapplication.exceptions.ResourceNotFoundException;
 
 @RestController
 @RequestMapping("/product")
@@ -46,18 +47,22 @@ public class ProductController {
         }
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Product> getOneProduct(@PathVariable String id) throws ResourceNotFoundException {
+        Product product = productRepository.findById(id)
+        .orElseThrow(() -> new ResourceNotFoundException("Product " + id + " not found!"));
+
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(product);
+    }
+
     @PostMapping
     public ResponseEntity<String> registerNewProduct(@RequestBody @Validated RequestProduct product) {
         try {
-            Optional<Category> categoryFound = categoryRepository.findById(product.category_id());
-
-            if(categoryFound.isEmpty()) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body("Category not found!");
-            }
+            Category categoryFound = categoryRepository.findById(product.category_id())
+            .orElseThrow(() -> new ResourceNotFoundException("Category " + product.category_id() + " not found!"));
 
             Product newProduct = new Product(product);
-            newProduct.setCategory(categoryFound.get());
+            newProduct.setCategory(categoryFound);
 
             productRepository.save(newProduct);
 
@@ -71,20 +76,21 @@ public class ProductController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<String> changeOneProduct(@RequestBody @Validated RequestProduct product, @PathVariable String id) {
-        try {
-            Optional<Product> productFound = productRepository.findById(id);
+    public ResponseEntity<Product> changeOneProduct(@RequestBody @Validated RequestProduct product, @PathVariable String id) throws ResourceNotFoundException {
+        Product productFound = productRepository.findById(id)
+        .orElseThrow(() -> new ResourceNotFoundException("Product " + id + " not found!"));
+        Category categoryFound = categoryRepository.findById(product.category_id())
+        .orElseThrow(() -> new ResourceNotFoundException("Category " + product.category_id() + " not found!"));
 
-            if(productFound.isEmpty()) {
-                throw new Exception("Product not found!");
-            }
+        Product newProduct = productFound;
+        newProduct.setName(product.name());
+        newProduct.setDescription(product.description());
+        newProduct.setBrand(product.brand());
+        newProduct.setBarcode(product.barcode());
+        newProduct.setCategory(categoryFound);
 
-            return ResponseEntity.ok("Product changed successfully!");
-        } catch(Exception error) {
-            System.out.println("Error to change that product: " + error.getMessage());
+        productRepository.save(newProduct);
 
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-            .body("Failed to change product " + id + ". Please, try again later!");
-        }
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(newProduct);
     }
 }
