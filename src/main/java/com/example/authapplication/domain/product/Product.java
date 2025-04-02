@@ -1,6 +1,7 @@
 package com.example.authapplication.domain.product;
 
 import com.example.authapplication.domain.category.Category;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -40,6 +41,7 @@ public class Product {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "category_id")
+    @JsonIgnoreProperties({"products"})
     private Category category;
 
     public Product(RequestProduct requestProduct) {
