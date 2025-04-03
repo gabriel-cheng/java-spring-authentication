@@ -1,6 +1,7 @@
 package com.example.authapplication.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -90,4 +91,10 @@ public class UsersController {
          return ResponseEntity.status(HttpStatus.OK).body("User deleted successfully!");
     }
 
+    @PostMapping("/{login}")
+    public ResponseEntity<Optional<Users>> userLogin(@RequestBody RequestUsers user) throws ResourceNotFoundException {
+        Optional<Users> userFound = usersRepository.findByEmail(user.email());
+
+        return ResponseEntity.status(HttpStatus.OK).body(userFound);
+    }
 }
