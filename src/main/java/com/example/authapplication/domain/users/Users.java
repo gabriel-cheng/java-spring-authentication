@@ -1,4 +1,4 @@
-package com.example.authapplication.domain.user;
+package com.example.authapplication.domain.users;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -33,7 +33,7 @@ public class Users {
 
     private String password;
 
-    public Users(RequestUser requestUser) {
+    public Users(RequestUsers requestUser) {
         this.name = requestUser.name();
         this.age = requestUser.age();
         this.email = requestUser.email();

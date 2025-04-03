@@ -35,9 +35,9 @@ public class CategoryController {
         try {
             List<Category> allCategories = categoryRepository.findAll();
 
-            return ResponseEntity.ok(allCategories);
+            return ResponseEntity.status(HttpStatus.OK).body(allCategories);
         } catch(Exception error) {
-            System.out.println("Internal server error, please try again later. " + error.getMessage());
+            System.out.println("Failed to get all categories: " + error.getMessage());
 
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Collections.emptyList());
         }
@@ -48,7 +48,7 @@ public class CategoryController {
         Category categoryFound = categoryRepository.findById(id)
         .orElseThrow(() -> new ResourceNotFoundException("Category " + id + " not found!"));
 
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(categoryFound);
+        return ResponseEntity.status(HttpStatus.OK).body(categoryFound);
     }
 
     @PostMapping
@@ -58,12 +58,12 @@ public class CategoryController {
 
             categoryRepository.save(newCategory);
 
-            return ResponseEntity.ok("Category created successfully!");
+            return ResponseEntity.status(HttpStatus.OK).body("Category created successfully!");
         } catch(Exception error) {
-            System.out.println("Error to register that category: " + error.getMessage());
+            System.out.println("Failed to register that category: " + error.getMessage());
 
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-            .body("Internal server error, please try again later!");
+            .body("An unexpected error ocurred. Please, try again later!");
         }
     }
 
@@ -78,7 +78,7 @@ public class CategoryController {
 
         categoryRepository.save(newCategory);
 
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(categoryFound);
+        return ResponseEntity.status(HttpStatus.OK).body(categoryFound);
     }
 
     @DeleteMapping("/{id}")
@@ -88,6 +88,6 @@ public class CategoryController {
 
         categoryRepository.deleteById(categoryFound.getCategory_id());
 
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body("Category deletected successfully!");
+        return ResponseEntity.status(HttpStatus.OK).body("Category deletected successfully!");
     }
 }

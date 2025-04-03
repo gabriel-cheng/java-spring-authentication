@@ -38,9 +38,9 @@ public class ProductController {
         try {
             List<Product> products = productRepository.findAll();
 
-            return ResponseEntity.ok(products);
+            return ResponseEntity.status(HttpStatus.OK).body(products);
         } catch(Exception error) {
-            System.out.println("Error to find products: " + error.getMessage());
+            System.out.println("Failed to get all products: " + error.getMessage());
 
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Collections.emptyList());
         }
@@ -51,7 +51,7 @@ public class ProductController {
         Product product = productRepository.findById(id)
         .orElseThrow(() -> new ResourceNotFoundException("Product " + id + " not found!"));
 
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(product);
+        return ResponseEntity.status(HttpStatus.OK).body(product);
     }
 
     @PostMapping
@@ -65,12 +65,12 @@ public class ProductController {
 
             productRepository.save(newProduct);
 
-            return ResponseEntity.status(HttpStatus.ACCEPTED).body("Product registered successfully!");
+            return ResponseEntity.status(HttpStatus.OK).body("Product registered successfully!");
         } catch(Exception error) {
-            System.out.println("Error to register a new product: " + error.getMessage());
+            System.out.println("Failed to register a new product: " + error.getMessage());
 
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-            .body("Failed to register a new product. Please, try again later!");
+            .body("An unexpected error ocurred. Please, try again later!");
         }
     }
 
@@ -90,6 +90,6 @@ public class ProductController {
 
         productRepository.save(newProduct);
 
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(newProduct);
+        return ResponseEntity.status(HttpStatus.OK).body(newProduct);
     }
 }
