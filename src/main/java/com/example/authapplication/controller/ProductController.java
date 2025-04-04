@@ -55,7 +55,7 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<String> registerNewProduct(@RequestBody @Validated RequestProduct product) {
+    public ResponseEntity<String> registerNewProduct(@RequestBody @Validated RequestProduct product) throws ResourceNotFoundException {
         try {
             Category categoryFound = categoryRepository.findById(product.category_id())
             .orElseThrow(() -> new ResourceNotFoundException("Category " + product.category_id() + " not found!"));

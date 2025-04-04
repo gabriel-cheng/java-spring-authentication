@@ -29,7 +29,7 @@ public class UsersController {
     private UsersRepository usersRepository;
 
     @GetMapping
-    public ResponseEntity<List<Users>> getAllUsers() throws ResourceNotFoundException {
+    public ResponseEntity<List<Users>> getAllUsers() {
         try {
             List<Users> users = usersRepository.findAll();
 
@@ -92,7 +92,7 @@ public class UsersController {
     }
 
     @PostMapping("/{login}")
-    public ResponseEntity<Optional<Users>> userLogin(@RequestBody RequestUsers user) throws ResourceNotFoundException {
+    public ResponseEntity<Optional<Users>> userLogin(@RequestBody RequestUsers user) {
         Optional<Users> userFound = usersRepository.findByEmail(user.email());
 
         return ResponseEntity.status(HttpStatus.OK).body(userFound);
