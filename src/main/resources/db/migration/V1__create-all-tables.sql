@@ -20,5 +20,6 @@ CREATE TABLE users(
     name TEXT NOT NULL,
     age INT NOT NULL,
     email TEXT NOT NULL,
-    password TEXT NOT NULL
+    password TEXT NOT NULL,
+    role TEXT NOT NULL
 );

@@ -33,11 +33,14 @@ public class Users {
 
     private String password;
 
+    private String role;
+
     public Users(RequestUsers requestUser) {
         this.name = requestUser.name();
         this.age = requestUser.age();
         this.email = requestUser.email();
         this.password = requestUser.password();
+        this.role = requestUser.role();
     }
 
 }

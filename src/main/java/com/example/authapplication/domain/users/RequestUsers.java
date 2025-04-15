@@ -4,5 +4,6 @@ public record RequestUsers(
     String name,
     int age,
     String email,
-    String password
+    String password,
+    String role
 ) { }
